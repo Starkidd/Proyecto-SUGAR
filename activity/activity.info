@@ -1,0 +1,7 @@
+[Activity]
+name = FaunaFlora
+activity_version = 1
+bundle_id = app.FaunaFlora
+exec = sugar-activity app.FaunaFlora
+icon = pendiente.svg
+licence = GPLv3+
