@@ -1,7 +1,7 @@
 [Activity]
-name = FaunaFlora
+name = faunaflora
 activity_version = 1
-bundle_id = app.FaunaFlora
-exec = sugar-activity app.FaunaFlora
+bundle_id = app.faunaflora
+exec = sugar-activity app.faunaflora
 icon = pendiente.svg
 licence = GPLv3+
