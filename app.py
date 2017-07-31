@@ -55,14 +55,17 @@ class faunaflora(activity.Activity):
         for widget in self.canvas:
             self.canvas.remove(widget)
 
-        self.boton_conflor_planta = Gtk.Button('Con Flor')
-        self.boton_sinFlor_planta = Gtk.Button('Sin Flor')
-        self.canvas.attach(self.boton_conflor_planta,0,0,1,1)
-        self.canvas.attach_next_to(self.boton_sinFlor_planta,self.boton_conflor_planta,Gtk.PositionType.RIGHT,1,1)
+        self.label_conflor_planta = Gtk.Label('Con Flor')
+        self.label_sinflor_planta = Gtk.Label('sin Flor')
+
+        self.boton_siguiente_planta = Gtk.Button('Siguinte')
+        self.canvas.attach(self.label_conflor_planta,0,0,1,1)
+        self.canvas.attach_next_to(self.label_sinflor_planta,self.label_conflor_planta,Gtk.PositionType.BOTTOM,1,1)
+        self.canvas.attach(self.boton_siguiente_planta,0,2,1,1)
 
         self.canvas.show_all()
-        self.boton_conflor_planta.connect('clicked',self.TerceraVentanaPlanta)
-        self.boton_sinFlor_planta.connect('clicked',self.TerceraVentanaPlanta)
+        self.boton_siguiente_planta.connect('clicked',self.TerceraVentanaPlanta)
+        
 
 
     def TerceraVentanaPlanta(self,b):
@@ -96,13 +99,18 @@ class faunaflora(activity.Activity):
         for widget in self.canvas:
             self.canvas.remove(widget)
 
-        self.boton_dondeviven_animal = Gtk.Button('Donde Viven')
-        self.boton_alimentacion_animal = Gtk.Button('Su alimentacion')
-        self.canvas.attach(self.boton_dondeviven_animal,0,0,1,1)
-        self.canvas.attach_next_to(self.boton_alimentacion_animal,self.boton_dondeviven_animal,Gtk.PositionType.RIGHT,1,1)
+        self.label_dondeviven_animal = Gtk.Label('Donde Viven')
+        self.label_alimentacion_animal = Gtk.Label('Su alimentacion')
+
+        self.boton_siguiente_animal = Gtk.Button('Siguiente')
+
+        self.canvas.attach(self.label_dondeviven_animal,0,0,1,1)
+        self.canvas.attach_next_to(self.label_alimentacion_animal,self.label_dondeviven_animal,Gtk.PositionType.BOTTOM,1,1)
+        self.canvas.attach(self.boton_siguiente_animal,0,2,1,1)
+
         self.canvas.show_all()
-        self.boton_dondeviven_animal.connect('clicked',self.TerceraVentanaAnimal)
-        self.boton_alimentacion_animal.connect('clicked',self.TerceraVentanaAnimal)
+        self.boton_siguiente_animal.connect('clicked',self.TerceraVentanaAnimal)
+        
 
 
     def TerceraVentanaAnimal(self,b):
@@ -128,3 +136,5 @@ class faunaflora(activity.Activity):
         self.label_animal = Gtk.Label('Los animales de mi pais')
         self.canvas.attach(self.label_animal,0,0,1,1)
         self.canvas.show_all()
+
+
