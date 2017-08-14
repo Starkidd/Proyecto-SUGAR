@@ -14,9 +14,23 @@ class faunaflora(activity.Activity):
 
     def __init__(self, handle):
         activity.Activity.__init__(self, handle)
+        self.set_default_size(800,600)
         self.agregar_toolbar()
         self.agregar_contenedor()
         self.PrimeraVentanaPlanta()
+        self.fondo()
+
+    def fondo(self):
+        self.fondoPantalla = Gtk.Image()
+        self.canvas.attach(self.fondoPantalla,0,0,4,1)
+        self.fondoPantalla.set_from_file('maxresdefault.jpg')
+
+        buf = self.fondoPantalla.get_pixbuf()
+        self.fondoPantalla.set_from_pixbuf(
+        buf.scale_simple(800, 515, GdkPixbuf.InterpType.BILINEAR))
+
+        self.fondoPantalla.show()
+        #self.canvas.show_all()
         
 
     def agregar_toolbar(self):
@@ -31,14 +45,17 @@ class faunaflora(activity.Activity):
         self.set_toolbar_box(toolbar_box)
         toolbar_box.show()
 
+
     def agregar_contenedor(self):
         self.canvas = Gtk.Grid()
+        self.canvas.set_column_homogeneous(False)
+        #self.contenedor.set_row_homogeneous(True)
         self.add(self.canvas)
 
     def PrimeraVentanaPlanta(self):
         self.planta = Gtk.Button('Clasificacion de las plantas')
         self.animales = Gtk.Button('Clasificacion de los animales')
-        self.canvas.attach(self.planta, 0, 0, 1, 1)
+        self.canvas.attach(self.planta, 1, 1, 1, 1)
         self.canvas.attach_next_to(
             self.animales,
             self.planta,
@@ -93,48 +110,79 @@ class faunaflora(activity.Activity):
         self.canvas.attach(self.label_planta,0,0,1,1)
         self.canvas.show_all()
 
-
+    #modificacioooon 
     def SegundaVentanaAnimal(self,btn):
 
         for widget in self.canvas:
             self.canvas.remove(widget)
 
-        self.label_dondeviven_animal = Gtk.Label('Donde Viven')
-        self.label_alimentacion_animal = Gtk.Label('Su alimentacion')
+        self.fondoPantalla = Gtk.Image()
+        self.canvas.attach(self.fondoPantalla,0,0,4,1)
+        self.fondoPantalla.set_from_file('clasificacionanimal.jpg')
 
-        self.boton_siguiente_animal = Gtk.Button('Siguiente')
+        buf = self.fondoPantalla.get_pixbuf()
+        self.fondoPantalla.set_from_pixbuf(
+        buf.scale_simple(800, 500, GdkPixbuf.InterpType.BILINEAR))
 
-        self.canvas.attach(self.label_dondeviven_animal,0,0,1,1)
-        self.canvas.attach_next_to(self.label_alimentacion_animal,self.label_dondeviven_animal,Gtk.PositionType.BOTTOM,1,1)
-        self.canvas.attach(self.boton_siguiente_animal,0,2,1,1)
+        self.fondoPantalla.show()
+
+
+        self.label_clasf_animal = Gtk.Label('Los Animales Se Clasifican Por')
+        self.boton_anatomia_animal = Gtk.Button('Segun su Anatomia')
+        self.boton_reprodicir_animal = Gtk.Button('su forma de reproducirse')
+        self.boton_alimentacion_animal = Gtk.Button('Segun su Alimentacion')
+        self.boton_dondeviven_animal = Gtk.Button('Donde Viven')
+        self.canvas.attach(self.label_clasf_animal,1,1,1,1)
+        self.canvas.attach(self.boton_dondeviven_animal,0,2,1,1)
+        self.canvas.attach_next_to(self.boton_anatomia_animal,self.boton_dondeviven_animal,Gtk.PositionType.RIGHT,1,1)
+        self.canvas.attach_next_to(self.boton_alimentacion_animal,self.boton_anatomia_animal,Gtk.PositionType.RIGHT,1,1)
+        self.canvas.attach_next_to(self.boton_reprodicir_animal,self.boton_alimentacion_animal,Gtk.PositionType.RIGHT,1,1)
 
         self.canvas.show_all()
-        self.boton_siguiente_animal.connect('clicked',self.TerceraVentanaAnimal)
+        self.boton_dondeviven_animal.connect('clicked',self.dondeViven)
+        self.boton_alimentacion_animal.connect('clicked',self.TerceraVentanaAnimal)
+        self.boton_anatomia_animal.connect('clicked',self.TerceraVentanaAnimal)
+        self.boton_reprodicir_animal.connect('clicked',self.TerceraVentanaAnimal)
+
         
 
 
-    def TerceraVentanaAnimal(self,b):
+    def dondeViven(self,b):
         
         for widget in self.canvas:
             self.canvas.remove(widget)
+
+
         
-        
-        self.boton_inicio_animal = Gtk.Button('Inicio')
-        self.label_numero_animal = Gtk.Label('Numero de veces')
-        self.numero_de_entrada_animal = Gtk.Entry() 
-        self.canvas.attach(self.label_numero_animal,0,0,1,1)
-        self.canvas.attach_next_to(self.numero_de_entrada_animal,self.label_numero_animal,Gtk.PositionType.RIGHT,1,1)
-        self.canvas.attach_next_to(self.boton_inicio_animal,self.label_numero_animal,Gtk.PositionType.BOTTOM,1,1)
+        self.acuatico = Gtk.Image()
+        self.canvas.attach(self.acuatico,0,0,1,1)
+        self.acuatico.set_from_file('animalesacuaticos.jpg')
+
+        buf = self.acuatico.get_pixbuf()
+        self.acuatico.set_from_pixbuf(
+        buf.scale_simple(300,300, GdkPixbuf.InterpType.BILINEAR))
+
+        self.acuatico.show()
+
+        self.terrestre = Gtk.Image()
+        self.canvas.attach_next_to(self.terrestre,self.acuatico,Gtk.PositionType.RIGHT,1,1)
+        self.terrestre.set_from_file('terrestre.jpg')
+
+        buf = self.terrestre.get_pixbuf()
+        self.terrestre.set_from_pixbuf(
+        buf.scale_simple(300,300, GdkPixbuf.InterpType.BILINEAR))
+
+        self.terrestre.show()
+
+
+        self.space = Gtk.Label('')
+        self.canvas.attach_next_to(self.space,self.acuatico,Gtk.PositionType.BOTTOM,1,1)
+        self.labelac = Gtk.Label()
+        self.labelac.set_markup("Los <b>animales acuaticos</b> son aquellos\n que viven en el agua, tanto en el mar\n como en agua dulce(Rios, Lagos)")
+        self.canvas.attach_next_to(self.labelac,self.space,Gtk.PositionType.BOTTOM,1,1)
+
+        self.labelterr = Gtk.Label()
+        self.labelterr.set_markup("Los <b>Animales terrestre</b> son los\nanimales que viven en la tierra,")
+        self.canvas.attach_next_to(self.labelterr,self.terrestre,Gtk.PositionType.BOTTOM,10,10)
         self.canvas.show_all()
-        self.boton_inicio_animal.connect('clicked',self.CuartaVentanaAnimal)
-
-
-    def CuartaVentanaAnimal(self,btn):
-        for widget in self.canvas:
-            self.canvas.remove(widget)
-
-        self.label_animal = Gtk.Label('Los animales de mi pais')
-        self.canvas.attach(self.label_animal,0,0,1,1)
-        self.canvas.show_all()
-
 
