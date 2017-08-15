@@ -23,7 +23,7 @@ class faunaflora(activity.Activity):
     def fondo(self):
         self.fondoPantalla = Gtk.Image()
         self.canvas.attach(self.fondoPantalla,0,0,4,1)
-        self.fondoPantalla.set_from_file('maxresdefault.jpg')
+        self.fondoPantalla.set_from_file('imagenes/maxresdefault.jpg')
 
         buf = self.fondoPantalla.get_pixbuf()
         self.fondoPantalla.set_from_pixbuf(
@@ -118,7 +118,7 @@ class faunaflora(activity.Activity):
 
         self.fondoPantalla = Gtk.Image()
         self.canvas.attach(self.fondoPantalla,0,0,4,1)
-        self.fondoPantalla.set_from_file('clasificacionanimal.jpg')
+        self.fondoPantalla.set_from_file('imagenes/clasificacionanimal.jpg')
 
         buf = self.fondoPantalla.get_pixbuf()
         self.fondoPantalla.set_from_pixbuf(
@@ -156,7 +156,7 @@ class faunaflora(activity.Activity):
         
         self.acuatico = Gtk.Image()
         self.canvas.attach(self.acuatico,0,0,1,1)
-        self.acuatico.set_from_file('animalesacuaticos.jpg')
+        self.acuatico.set_from_file('imagenes/animalesacuaticos.jpg')
 
         buf = self.acuatico.get_pixbuf()
         self.acuatico.set_from_pixbuf(
@@ -166,7 +166,7 @@ class faunaflora(activity.Activity):
 
         self.terrestre = Gtk.Image()
         self.canvas.attach_next_to(self.terrestre,self.acuatico,Gtk.PositionType.RIGHT,1,1)
-        self.terrestre.set_from_file('terrestre.jpg')
+        self.terrestre.set_from_file('imagenes/terrestre.jpg')
 
         buf = self.terrestre.get_pixbuf()
         self.terrestre.set_from_pixbuf(
