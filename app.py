@@ -10,11 +10,19 @@ from gi.repository import Gtk, Gdk, GdkPixbuf
 logger = logging.getLogger(__name__)
 
 
+import pygtk
+pygtk.require('2.0')
+import gtk
+
+
+import sys
+
+
 class faunaflora(activity.Activity):
 
     def __init__(self, handle):
         activity.Activity.__init__(self, handle)
-        self.set_default_size(800,600)
+        self.set_default_size(640,480)
         self.agregar_toolbar()
         self.agregar_contenedor()
         self.PrimeraVentanaPlanta()
@@ -27,11 +35,9 @@ class faunaflora(activity.Activity):
 
         buf = self.fondoPantalla.get_pixbuf()
         self.fondoPantalla.set_from_pixbuf(
-        buf.scale_simple(800, 515, GdkPixbuf.InterpType.BILINEAR))
+        buf.scale_simple(640, 390, GdkPixbuf.InterpType.BILINEAR))
 
         self.fondoPantalla.show()
-        #self.canvas.show_all()
-        
 
     def agregar_toolbar(self):
         toolbar_box = ToolbarBox()
@@ -49,20 +55,39 @@ class faunaflora(activity.Activity):
     def agregar_contenedor(self):
         self.canvas = Gtk.Grid()
         self.canvas.set_column_homogeneous(False)
-        #self.contenedor.set_row_homogeneous(True)
         self.add(self.canvas)
 
     def PrimeraVentanaPlanta(self):
+        for widget in self.canvas:
+            self.canvas.remove(widget)
         self.planta = Gtk.Button('Clasificacion de las plantas')
         self.animales = Gtk.Button('Clasificacion de los animales')
         self.canvas.attach(self.planta, 1, 1, 1, 1)
-        self.canvas.attach_next_to(
-            self.animales,
-            self.planta,
-            Gtk.PositionType.RIGHT,
-            1,
-            1
-        )
+        self.canvas.attach_next_to(self.animales,self.planta,Gtk.PositionType.RIGHT,1,1)
+        self.planta.connect('clicked',self.SegundaVentanaPlanta)
+        self.animales.connect('clicked',self.SegundaVentanaAnimal)
+        self.canvas.show_all()
+
+
+    def PrimeraVentanaPlantas(self,btn):
+        for widget in self.canvas:
+            self.canvas.remove(widget)
+
+        self.fondoPantalla = Gtk.Image()
+        self.canvas.attach(self.fondoPantalla,0,0,4,1)
+        self.fondoPantalla.set_from_file('imagenes/maxresdefault.jpg')
+
+        buf = self.fondoPantalla.get_pixbuf()
+        self.fondoPantalla.set_from_pixbuf(
+        buf.scale_simple(640, 390, GdkPixbuf.InterpType.BILINEAR))
+
+        self.fondoPantalla.show()
+
+        self.planta = Gtk.Button('Clasificacion de las plantas')
+        self.animales = Gtk.Button('Clasificacion de los animales')
+        
+        self.canvas.attach_next_to(self.planta,self.fondoPantalla,Gtk.PositionType.BOTTOM,1,1)
+        self.canvas.attach_next_to(self.animales,self.planta,Gtk.PositionType.RIGHT,1,1)
         self.planta.connect('clicked',self.SegundaVentanaPlanta)
         self.animales.connect('clicked',self.SegundaVentanaAnimal)
         self.canvas.show_all()
@@ -117,33 +142,44 @@ class faunaflora(activity.Activity):
             self.canvas.remove(widget)
 
         self.fondoPantalla = Gtk.Image()
-        self.canvas.attach(self.fondoPantalla,0,0,4,1)
+        self.canvas.attach(self.fondoPantalla,0,0,3,1)
         self.fondoPantalla.set_from_file('imagenes/clasificacionanimal.jpg')
 
         buf = self.fondoPantalla.get_pixbuf()
         self.fondoPantalla.set_from_pixbuf(
-        buf.scale_simple(800, 500, GdkPixbuf.InterpType.BILINEAR))
+        buf.scale_simple(640, 380, GdkPixbuf.InterpType.BILINEAR))
 
         self.fondoPantalla.show()
 
+        self.alineadoderecho = Gtk.Label('')
+        self.interlineado = Gtk.Label('')
+        
+        self.canvas.attach_next_to(self.alineadoderecho,self.fondoPantalla,Gtk.PositionType.BOTTOM,1,1)
 
-        self.label_clasf_animal = Gtk.Label('Los Animales Se Clasifican Por')
+        self.label_clasf_animal = Gtk.Label()
+        self.label_clasf_animal.set_markup('<i><b>Clasificacion de los animales:</b></i>')
+        self.canvas.attach_next_to(self.label_clasf_animal,self.alineadoderecho,Gtk.PositionType.RIGHT,1,1)
+        
         self.boton_anatomia_animal = Gtk.Button('Segun su Anatomia')
-        self.boton_reprodicir_animal = Gtk.Button('su forma de reproducirse')
+        self.boton_reprodicir_animal = Gtk.Button('Segun su forma de reproducirse')
         self.boton_alimentacion_animal = Gtk.Button('Segun su Alimentacion')
-        self.boton_dondeviven_animal = Gtk.Button('Donde Viven')
-        self.canvas.attach(self.label_clasf_animal,1,1,1,1)
+        self.boton_dondeviven_animal = Gtk.Button('Tipos de habitats')
+        
         self.canvas.attach(self.boton_dondeviven_animal,0,2,1,1)
         self.canvas.attach_next_to(self.boton_anatomia_animal,self.boton_dondeviven_animal,Gtk.PositionType.RIGHT,1,1)
         self.canvas.attach_next_to(self.boton_alimentacion_animal,self.boton_anatomia_animal,Gtk.PositionType.RIGHT,1,1)
-        self.canvas.attach_next_to(self.boton_reprodicir_animal,self.boton_alimentacion_animal,Gtk.PositionType.RIGHT,1,1)
-
+        self.canvas.attach_next_to(self.interlineado,self.boton_dondeviven_animal,Gtk.PositionType.BOTTOM,1,1)
+        self.canvas.attach_next_to(self.boton_reprodicir_animal,self.interlineado,Gtk.PositionType.BOTTOM,1,1)
+        self.volver1 = Gtk.Button('Volver')
+        self.canvas.attach_next_to(self.volver1,self.boton_reprodicir_animal,Gtk.PositionType.RIGHT,1,1)
+        
         self.canvas.show_all()
+        self.volver1.connect('clicked',self.PrimeraVentanaPlantas)
         self.boton_dondeviven_animal.connect('clicked',self.dondeViven)
         self.boton_alimentacion_animal.connect('clicked',self.TerceraVentanaAnimal)
         self.boton_anatomia_animal.connect('clicked',self.TerceraVentanaAnimal)
         self.boton_reprodicir_animal.connect('clicked',self.TerceraVentanaAnimal)
-
+        
         
 
 
@@ -153,14 +189,13 @@ class faunaflora(activity.Activity):
             self.canvas.remove(widget)
 
 
-        
         self.acuatico = Gtk.Image()
         self.canvas.attach(self.acuatico,0,0,1,1)
         self.acuatico.set_from_file('imagenes/animalesacuaticos.jpg')
 
         buf = self.acuatico.get_pixbuf()
         self.acuatico.set_from_pixbuf(
-        buf.scale_simple(300,300, GdkPixbuf.InterpType.BILINEAR))
+        buf.scale_simple(320,220, GdkPixbuf.InterpType.BILINEAR))
 
         self.acuatico.show()
 
@@ -170,7 +205,7 @@ class faunaflora(activity.Activity):
 
         buf = self.terrestre.get_pixbuf()
         self.terrestre.set_from_pixbuf(
-        buf.scale_simple(300,300, GdkPixbuf.InterpType.BILINEAR))
+        buf.scale_simple(320,220, GdkPixbuf.InterpType.BILINEAR))
 
         self.terrestre.show()
 
@@ -182,7 +217,8 @@ class faunaflora(activity.Activity):
         self.canvas.attach_next_to(self.labelac,self.space,Gtk.PositionType.BOTTOM,1,1)
 
         self.labelterr = Gtk.Label()
-        self.labelterr.set_markup("Los <b>Animales terrestre</b> son los\nanimales que viven en la tierra,")
+        self.labelterr.set_markup("Los <b>Animales terrestre</b> son los\nanimales que viven en la tierra")
         self.canvas.attach_next_to(self.labelterr,self.terrestre,Gtk.PositionType.BOTTOM,10,10)
+        
         self.canvas.show_all()
 
